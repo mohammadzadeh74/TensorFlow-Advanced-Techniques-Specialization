@@ -283,7 +283,7 @@ def test_final_model(final_model):
 def test_model_compile(model):
 
     from tensorflow.python.keras.metrics import MeanMetricWrapper
-    
+
     test_cases = [
         {
             "name": "metrics_0_check",
@@ -302,19 +302,18 @@ def test_model_compile(model):
             "name": "wine_type_loss_check",
             "result": (model.loss['wine_type'] == 'binary_crossentropy') or 
                       (model.loss['wine_type'].name == 'binary_crossentropy') or 
-                      ('binary_crossentropy' in model.loss['wine_type']),
+                      (str(model.loss['wine_type']).split()[1] == 'binary_crossentropy'),
             "expected": True,
             "error_message": f'wine type loss: {model.loss["wine_type"]} is incorrect. Please check your code.'
         },
         {
             "name": "wine_quality_loss_check",
-            "result": (type(model.loss['wine_quality']) == tf.keras.losses.MeanSquaredError) or
-                      (model.loss['wine_quality'] in {'mse', 'mean_squared_error'}) or 
-                      ('mean_squared_error' in model.loss['wine_quality']) or 
+            "result": (model.loss['wine_quality'] in ['mse', 'mean_squared_error']) or 
+                      (str(model.loss['wine_quality']).split()[1] == 'mean_squared_error') or 
                       (model.loss['wine_quality'].name == 'mean_squared_error'),
             "expected": True,
-            "error_message": f'wine quality loss: {model.loss["wine_quality"]} is incorrect. Please check your code.'
-        }
+            "error_message": f'wine quality loss: {model.loss["wine_type"]} is incorrect. Please check your code.'
+        },
     ]
     
     test_loop(test_cases)
